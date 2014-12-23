@@ -9,7 +9,8 @@ With this package your can create a custom document
  when you published the node. During syndication, the system will create automaticaly one sub document per item found
  in the RSS or ATOM feed.
 
-**Warning**: This package is in is early age, so things can change ;)
+**Warning**: This package is in is early age, so things can change ;) This package target the version 1.3 of Neos and
+currently work only on master with the following patch applied: https://review.typo3.org/#/q/topic:datetime
 	
 TODO
 ----
