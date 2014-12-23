@@ -1,0 +1,100 @@
+'TYPO3.Neos:Document':
+  constraints:
+    nodeTypes:
+      'Ttree.Aggregator:SyndicatedDocument': FALSE
+
+'Ttree.Aggregator:Page':
+  abstract: true
+  superTypes: ['TYPO3.Neos.NodeTypes:Page']
+  ui:
+    icon: 'icon-rss'
+    position: 20
+    inspector:
+      groups:
+        aggregator:
+          label: 'Syndicated Content'
+          position: 10
+
+'Ttree.Aggregator:Feed':
+  superTypes: ['Ttree.Aggregator:Page']
+  constraints:
+    nodeTypes:
+      'Ttree.Aggregator:Feed': TRUE
+      'Ttree.Aggregator:SyndicatedDocument': TRUE
+      '*': FALSE
+  ui:
+    label: 'Aggregator'
+  properties:
+    feedUri:
+      type: 'string'
+      ui:
+        label: 'Feed URI'
+        reloadIfChanged: TRUE
+        inspector:
+          group: aggregator
+          editorOptions:
+            placeholder: 'http://www.domain.com/atom.xml'
+    aggregationStatus:
+      type: 'boolean'
+      ui:
+        label: 'Enabled?'
+        inspector:
+          group: aggregator
+    aggregationFrequency:
+      type: 'string'
+      ui:
+        label: 'Aggregation Frequency'
+        reloadIfChanged: TRUE
+        inspector:
+          group: aggregator
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              '':
+                label: 'Default'
+              '0 * * * * *':
+                label: 'Hourly'
+              '0 0 * * * *':
+                label: 'Daily'
+              '0 0 * * * 0':
+                label: 'Weekly'
+              '0 0 1 * *':
+                label: 'Monthly'
+
+'Ttree.Aggregator:SyndicatedDocument':
+  superTypes: ['Ttree.Aggregator:Page']
+  constraints:
+    nodeTypes:
+      '*': FALSE
+  ui:
+    label: 'Syndicated Document'
+    icon: 'icon-rss-sign'
+  properties:
+    description:
+      type: string
+      ui:
+        label: 'Description'
+        inlineEditable: TRUE
+    externalIdentifier:
+      type: 'string'
+      ui:
+        label: 'External Identifier'
+        reloadIfChanged: TRUE
+        inspector:
+          group: aggregator
+    publicationDate:
+      type: 'DateTime'
+      ui:
+        label: 'Publication Date'
+        reloadIfChanged: TRUE
+        inspector:
+          group: aggregator
+          editorOptions:
+            format: 'd-m-Y h:i'
+    link:
+      type: 'string'
+      ui:
+        label: 'Link'
+        reloadIfChanged: TRUE
+        inspector:
+          group: aggregator

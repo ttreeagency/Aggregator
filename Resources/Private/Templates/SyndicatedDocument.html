@@ -1,0 +1,17 @@
+{namespace neos=TYPO3\Neos\ViewHelpers}
+<article{attributes -> f:format.raw()}>
+<header>
+	{neos:contentElement.editable(property: 'title', tag: 'h3')}
+</header>
+{neos:contentElement.editable(property: 'description')}
+<f:if condition="{link}">
+	<hr/>
+	<div>
+		<a href="{link}">Read the complete article</a> |
+		<a href="{feedUri}">{feedTitle}</a>
+		<f:if condition="{publicationDate}">
+			| {publicationDate -> f:format.date(forceLocale: 'en')}
+		</f:if>
+	</div>
+</f:if>
+</article>

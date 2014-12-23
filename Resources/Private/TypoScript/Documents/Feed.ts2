@@ -1,0 +1,18 @@
+prototype(Ttree.Aggregator:Feed) >
+prototype(Ttree.Aggregator:Feed) < prototype(TYPO3.Neos:Content) {
+	templatePath = 'resource://Ttree.Aggregator/Private/Templates/Feed.html'
+
+	title = ${q(node).property('title')}
+
+	documents = ${q(node).find('[instanceof Ttree.Aggregator:SyndicatedDocument]')}
+
+	documentCounter = ${this.documents.count()}
+}
+
+prototype(TYPO3.Neos:PrimaryContent) {
+	aggregatorFeed {
+		@position = 'before default'
+		condition = ${q(node).is('[instanceof Ttree.Aggregator:Feed]')}
+		type = 'Ttree.Aggregator:Feed'
+	}
+}

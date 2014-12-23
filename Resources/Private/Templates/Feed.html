@@ -1,0 +1,15 @@
+{namespace neos=TYPO3\Neos\ViewHelpers}
+<section{attributes -> f:format.raw()}>
+	<header>
+		<h2>{title} <small>{documentCounter} article(s)</small></h2>
+	</header>
+	<f:if condition="{documentCounter}">
+		<f:then>
+			{feed -> f:format.raw()}
+		</f:then>
+		<f:else>
+			<b>Please wait content syndication task, currently no article available ...</b>
+		</f:else>
+	</f:if>
+
+</section>

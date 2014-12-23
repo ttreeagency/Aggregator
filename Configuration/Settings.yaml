@@ -1,0 +1,17 @@
+TYPO3:
+  Flow:
+    object:
+      excludeClasses:
+        'dg.rss-php': ['.*']
+        'beberlei.assert': ['.*']
+        'cocur.slugify': ['.*']
+
+  Neos:
+    typoScript:
+      autoInclude:
+        'Ttree.Aggregator': TRUE
+
+Ttree:
+
+  Aggregator:
+    defaultExpression: '* * * * *'

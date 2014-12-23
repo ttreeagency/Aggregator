@@ -1,0 +1,25 @@
+prototype(Ttree.Aggregator:SyndicatedDocument) >
+prototype(Ttree.Aggregator:SyndicatedDocument) < prototype(TYPO3.Neos:Content) {
+	templatePath = 'resource://Ttree.Aggregator/Private/Templates/SyndicatedDocument.html'
+
+	title = ${q(node).property('title')}
+	description = ${q(node).property('description')}
+	publicationDate = ${q(node).property('publicationDate')}
+	link = ${q(node).property('link')}
+
+	feed = ${q(node).parents('[instanceof Ttree.Aggregator:Feed]').get(0)}
+	@override.feed = ${this.feed}
+
+	feedUri = TYPO3.Neos:NodeUri {
+		node = ${feed}
+	}
+	feedTitle = ${q(this.feed).property('title')}
+}
+
+prototype(TYPO3.Neos:PrimaryContent) {
+	aggregatorSyndicatedDocument {
+		@position = 'before default'
+		condition = ${q(node).is('[instanceof Ttree.Aggregator:SyndicatedDocument]')}
+		type = 'Ttree.Aggregator:SyndicatedDocument'
+	}
+}
