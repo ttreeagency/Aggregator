@@ -12,6 +12,7 @@ namespace Ttree\Aggregator\Service;
 
 use Assert\Assertion;
 use Cocur\Slugify\Slugify;
+use Ttree\Aggregator\DataProvider\FeedDataProvider;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Utility\Arrays;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
@@ -44,11 +45,9 @@ class SyndicationService implements SyndicationServiceInterface {
 		}
 		Assertion::url($feedUri);
 		$slug = new Slugify();
-		$feed = $this->parseFeed($feedUri);
-		if (!isset($feed['item']) || !is_array($feed['item'])) {
-			return;
-		}
-		foreach ($feed['item'] as $item) {
+		$dataProvider = new FeedDataProvider();
+		$dataProvider->fetch($feedUri);
+		foreach ($dataProvider as $item) {
 			$name = $slug->slugify($item['title']);
 			$document = $node->getNode($name) ?: $this->createDocument($node, $name, $item);
 			$document->setProperty('title', Arrays::getValueByPath($item, 'title'));
@@ -67,29 +66,11 @@ class SyndicationService implements SyndicationServiceInterface {
 	/**
 	 * @param NodeInterface $parentNode
 	 * @param string $name
-	 * @param array $item
 	 * @return NodeInterface
 	 */
-	protected function createDocument(NodeInterface $parentNode, $name, array $item) {
+	protected function createDocument(NodeInterface $parentNode, $name) {
 		$nodeType = $this->nodeTypeManager->getNodeType('Ttree.Aggregator:SyndicatedDocument');
 		return $parentNode->createNode($name, $nodeType);
-	}
-
-	/**
-	 * @param string $uri
-	 * @return array
-	 */
-	protected function parseFeed($uri) {
-		$dom = new \DOMDocument();
-		$dom->load($uri);
-		$feed = $dom->getElementsByTagName("feed");
-		if($feed->length != 0) {
-			$feed = \Feed::loadAtom($uri);
-		} else {
-			$feed = \Feed::loadRss($uri);
-		}
-
-		return $feed->toArray();
 	}
 
 }
