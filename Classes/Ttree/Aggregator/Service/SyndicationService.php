@@ -16,14 +16,13 @@ use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Utility\Arrays;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
-use TYPO3\TYPO3CR\Migration\Filters\NodeType;
 
 /**
  * Service class to parse external Feed (RSS or Atom)
  *
  * @Flow\Scope("singleton")
  */
-class SyndicationService {
+class SyndicationService implements SyndicationServiceInterface {
 
 	/**
 	 * @Flow\Inject

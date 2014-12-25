@@ -11,7 +11,7 @@ namespace Ttree\Aggregator\Task;
  *                                                                        */
 
 use Assert\Assertion;
-use Ttree\Aggregator\Service\SyndicationService;
+use Ttree\Aggregator\Service\SyndicationServiceInterface;
 use Ttree\Scheduler\Task\TaskInterface;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
@@ -30,7 +30,7 @@ class AggregatorTask implements TaskInterface {
 
 	/**
 	 * @Flow\Inject
-	 * @var SyndicationService
+	 * @var SyndicationServiceInterface
 	 */
 	protected $syndicationService;
 
