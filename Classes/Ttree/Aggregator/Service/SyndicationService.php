@@ -14,6 +14,7 @@ use Assert\Assertion;
 use Cocur\Slugify\Slugify;
 use Ttree\Aggregator\DataProvider\FeedDataProvider;
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Log\SystemLoggerInterface;
 use TYPO3\Flow\Utility\Arrays;
 use TYPO3\TYPO3CR\Domain\Model\NodeInterface;
 use TYPO3\TYPO3CR\Domain\Service\NodeTypeManager;
@@ -32,6 +33,12 @@ class SyndicationService implements SyndicationServiceInterface {
 	protected $nodeTypeManager;
 
 	/**
+	 * @Flow\Inject
+	 * @var SystemLoggerInterface
+	 */
+	protected $logger;
+
+	/**
 	 * @param NodeInterface $node
 	 */
 	public function process(NodeInterface $node) {
@@ -48,8 +55,13 @@ class SyndicationService implements SyndicationServiceInterface {
 		$dataProvider = new FeedDataProvider();
 		$dataProvider->fetch($feedUri);
 		foreach ($dataProvider as $item) {
-			$name = $slug->slugify($item['title']);
+			$title = strip_tags(trim(Arrays::getValueByPath($item, 'title')));
+			if ($title === '') {
+				continue;
+			}
+			$name = $slug->slugify($title);
 			$document = $node->getNode($name) ?: $this->createDocument($node, $name, $item);
+			$this->logger->log(sprintf('Import external article "%s"', $title));
 			$document->setProperty('title', Arrays::getValueByPath($item, 'title'));
 			$document->setProperty('description', Arrays::getValueByPath($item, 'description'));
 			$document->setProperty('link', Arrays::getValueByPath($item, 'link'));
