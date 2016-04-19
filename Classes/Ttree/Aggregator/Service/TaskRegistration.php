@@ -35,7 +35,7 @@ class TaskRegistration {
 	protected $persistenceManager;
 
 	/**
-	 * @Flow\InjectSettings(path="defaultExpression")
+	 * @Flow\InjectConfiguration(path="defaultExpression")
 	 * @var string
 	 */
 	protected $defaultExpression;
