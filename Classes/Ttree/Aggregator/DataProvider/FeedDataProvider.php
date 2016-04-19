@@ -27,18 +27,24 @@ class FeedDataProvider extends AbstractDataProvider {
 	 */
 	public function fetch($uri, array $options = array()) {
 		Assertion::url($uri);
+
 		$dom = new \DOMDocument();
 		$dom->load($uri);
+		
 		$feed = $dom->getElementsByTagName("feed");
+
 		if($feed->length != 0) {
 			$feed = \Feed::loadAtom($uri);
+			$feed = $feed->toArray();
+			$this->items = isset($feed['entry']) && is_array($feed['entry']) ? $feed['entry']: [];
+			unset($feed['entry']);
 		} else {
 			$feed = \Feed::loadRss($uri);
+			$feed = $feed->toArray();
+			$this->items = isset($feed['item']) && is_array($feed['item']) ? $feed['item']: [];
+			unset($feed['item']);
 		}
 
-		$feed = $feed->toArray();
-		$this->items = isset($feed['item']) && is_array($feed['item']) ? $feed['item']: array();
-		unset($feed['item']);
 		$this->metadata = $feed;
 
 		return $this;
